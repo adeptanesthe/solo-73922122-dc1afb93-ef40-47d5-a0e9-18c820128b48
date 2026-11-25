@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>壁画修复底图拼接台</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+<header>
+  <h1>壁画修复底图拼接台</h1>
+  <p class="sub">同机位灰度照片 · 曝光中位数校准 · 遮挡框增量合成</p>
+</header>
+
+<section id="upload-panel" class="panel">
+  <div class="row">
+    <label class="btn primary">
+      上传 3–8 张灰度 PNG（同尺寸，边长 ≤ 512）
+      <input type="file" id="file-input" accept="image/png" multiple hidden />
+    </label>
+    <button class="btn" id="load-samples" type="button">载入内置示例照片</button>
+    <span id="upload-hint" class="hint"></span>
+  </div>
+</section>
+
+<main id="workspace" hidden>
+  <div class="layout">
+    <div class="left">
+      <div class="panel toolbar">
+        <div class="row tools">
+          <div class="tool-group" role="group" aria-label="绘制模式">
+            <label><input type="radio" name="mode" value="calib" /> 圈校准区</label>
+            <label><input type="radio" name="mode" value="occ" checked /> 画遮挡框</label>
+          </div>
+          <button class="btn" id="clear-box" type="button">清除当前图遮挡框</button>
+          <button class="btn" id="clear-calib" type="button">清除校准区</button>
+          <button class="btn primary" id="apply" type="button">应用标注并合成</button>
+        </div>
+        <div class="row">
+          <span class="hint" id="mode-hint">模式：在当前照片上拖动画遮挡框（每张图至多一个）</span>
+        </div>
+      </div>
+
+      <div class="panel canvas-panel">
+        <div id="tabs" class="tabs"></div>
+        <div class="canvas-wrap">
+          <canvas id="canvas"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <aside class="right">
+      <div class="panel">
+        <h2>校准与偏移</h2>
+        <div id="status-msg" class="status"></div>
+        <table id="offset-table">
+          <thead><tr><th>照片</th><th>曝光偏移</th><th>状态</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div id="edge-list" class="edges"></div>
+      </div>
+
+      <div class="panel">
+        <h2>合成底图</h2>
+        <div id="composite-meta" class="hint">尚未合成</div>
+        <div class="canvas-wrap small">
+          <img id="composite-img" alt="合成底图" hidden />
+        </div>
+        <div class="row">
+          <label class="chk"><input type="checkbox" id="toggle-overlay" /> 红色标出待补拍区</label>
+        </div>
+        <div class="row">
+          <button class="btn" id="download-png" type="button" disabled>下载底图 PNG</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<div id="toast" class="toast" hidden></div>
+<script src="/static/app.js"></script>
+</body>
+</html>
